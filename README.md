@@ -12,8 +12,6 @@
 
 
 
-AKIA2HRBFFHOOVK3YBYJ
-
 
 
 
