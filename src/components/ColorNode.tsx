@@ -5,7 +5,7 @@ import { Handle, NodeProps, Position} from "reactflow";
 type NodeData = {
     color:string
 }
-
+// RXK7H4DpQHHjDYEHmDKoUy44a1544MyuX2pKNl36
 const styles = {
     backgroundColor: '',
     borderRadius: '50%',
