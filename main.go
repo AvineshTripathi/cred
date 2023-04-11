@@ -6,6 +6,7 @@ import (
 
 	"github.com/AvineshTripathi/cred/analyze"
 	"github.com/AvineshTripathi/cred/scan"
+	"github.com/AvineshTripathi/cred/utils"
 	"github.com/go-git/go-git/v5"
 )
 
@@ -77,7 +78,7 @@ func main() {
 					fmt.Println(err)
 				}
 
-				fmt.Println(t)
+				utils.Printer(t)
 			}
 		}
 

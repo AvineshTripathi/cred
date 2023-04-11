@@ -21,11 +21,14 @@ func ReadRepo(path string) ([][][]string, [][][]string, error) {
 			fmt.Println("h1")
 			return err
 		}
-		if !info.IsDir() {
+
+		// the name condition is specific to a particular demo repo, however there should a way to find those file which are satic and not need to be scanned like this
+		// we can scan this however this would take a lot time doing
+		// one workaround found over here was to use goroutine which is better but still needs a lot improvement inorder to remove this name check
+		if !info.IsDir() && info.Name() != "package-lock.json" {
 
 			content, err := ioutil.ReadFile(path)
 			if err != nil {
-				fmt.Println("h2")
 				return err
 			}
 
@@ -33,7 +36,6 @@ func ReadRepo(path string) ([][][]string, [][][]string, error) {
 
 			if len(matchedId) != 0 {
 				matchedId[0][0] = path
-				fmt.Println(matchedId[0][0])
 				a = append(a, matchedId)
 			} else {
 			}

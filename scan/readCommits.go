@@ -9,6 +9,7 @@ import (
 
 // needs to be reconsider on the approch of iterating though all the commits
 // we are using the go-git repo to get the iterator
+// skip condition is still left to consider 
 func ReadCommits(commitIterator object.CommitIter) ([][][]string, [][][]string, error) {
 
 	var a [][][]string

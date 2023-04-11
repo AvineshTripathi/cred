@@ -20,7 +20,7 @@ func Validate(matchedId [][]string, matchedKey [][]string) (*[]utils.Truth, erro
 		if len(matchedKey)%chunkSize != 0 {
 			numChunks++
 		}
-		r := make(chan utils.Truth, numChunks)
+		r := make(chan []utils.Truth, numChunks)
 
 		for i := 0; i < numChunks; i++ {
 			start := i * chunkSize
@@ -33,26 +33,27 @@ func Validate(matchedId [][]string, matchedKey [][]string) (*[]utils.Truth, erro
 
 		for i := 0; i < numChunks; i++ {
 			ele := <-r
-			result = append(result, ele)
+			result = append(result, ele...)
 		}
 
 	} else {
 		resultsSmall, err := checkSmallArr(matchedId, matchedKey)
 		if err != nil {
 			fmt.Println(err)
-		}
-
-		result = append(result, *resultsSmall)
+		}	
+		fmt.Println(*resultsSmall)
+		result = append(result, *resultsSmall...)
 	}
 
 	return &result, nil
 }
 
-func check(matchedId [][]string, matchedKey [][]string, result chan utils.Truth) {
+// Danger Area! Under Constructions
+func check(matchedId [][]string, matchedKey [][]string, result chan []utils.Truth) {
 
 	region := "us-west-2"
-	res := utils.Truth{}
-
+	res := []utils.Truth{}
+	var r utils.Truth
 	for _, id := range matchedId {
 		if len(id) != 2 {
 			continue
@@ -67,6 +68,11 @@ func check(matchedId [][]string, matchedKey [][]string, result chan utils.Truth)
 
 			tkey := strings.TrimSpace(key[1])
 			ctx := context.TODO()
+
+			r.Id = tid
+			r.Key = tkey
+			r.IdPath = id[0]
+			r.KeyPath = key[0]
 
 			// do we really need repeat all the below steps again and again
 			cfg, err := config.LoadDefaultConfig(ctx, config.WithCredentialsProvider(
@@ -83,16 +89,14 @@ func check(matchedId [][]string, matchedKey [][]string, result chan utils.Truth)
 
 			output, err := svc.GetCallerIdentity(ctx, input)
 			if err != nil {
+				res = append(res, r)
 				continue
 			}
 
-			res.Id = tid
-			res.Key = tkey
-			res.IdPath = id[0]
-			res.KeyPath = key[0]
+			
 
 			if output.Account != nil {
-				res.Found = true
+				r.Found = true
 
 			}
 
@@ -101,11 +105,11 @@ func check(matchedId [][]string, matchedKey [][]string, result chan utils.Truth)
 	result <- res
 }
 
-func checkSmallArr(matchedId [][]string, matchedKey [][]string) (*utils.Truth, error) {
+func checkSmallArr(matchedId [][]string, matchedKey [][]string) (*[]utils.Truth, error) {
 
 	region := "us-west-2"
-	res := &utils.Truth{}
-
+	var res []utils.Truth
+	var r utils.Truth
 	for _, id := range matchedId {
 		if len(id) != 2 {
 			continue
@@ -114,12 +118,19 @@ func checkSmallArr(matchedId [][]string, matchedKey [][]string) (*utils.Truth, e
 		tid := strings.TrimSpace(id[1])
 
 		for _, key := range matchedKey {
+			
 			if len(key) != 2 {
 				continue
 			}
 
 			tkey := strings.TrimSpace(key[1])
 			ctx := context.TODO()
+			
+			r.Id = tid
+			r.Key = tkey
+
+			r.IdPath = id[0]
+			r.KeyPath = key[0]
 			// do we really need repeat all the below steps again and again
 			cfg, err := config.LoadDefaultConfig(ctx, config.WithCredentialsProvider(
 				credentials.NewStaticCredentialsProvider(tid, tkey, ""),
@@ -135,21 +146,18 @@ func checkSmallArr(matchedId [][]string, matchedKey [][]string) (*utils.Truth, e
 
 			output, err := svc.GetCallerIdentity(ctx, input)
 			if err != nil {
+				res = append(res, r)
 				continue
 			}
 
-			res.Id = tid
-			res.Key = tkey
-
-			res.IdPath = id[0]
-			res.KeyPath = key[0]
-
+			// extra check 
 			if output.Account != nil {
-				res.Found = true
+				r.Found = true
 			}
 
+			res = append(res, r)
 		}
 	}
 
-	return res, nil
+	return &res, nil
 }
