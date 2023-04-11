@@ -1,25 +1,26 @@
-package main
+package analyze
 
 import (
 	"context"
 	"fmt"
 	"strings"
 
+	"github.com/AvineshTripathi/cred/utils"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 )
 
-func validate(matchedId [][]string, matchedKey [][]string) (*[]Truth, error) {
+func validate(matchedId [][]string, matchedKey [][]string) (*[]utils.Truth, error) {
 
-	var result []Truth
+	var result []utils.Truth
 	if len(matchedKey) > 100 {
 		chunkSize := 100
 		numChunks := len(matchedKey) / chunkSize
 		if len(matchedKey)%chunkSize != 0 {
 			numChunks++
 		}
-		r := make(chan Truth, numChunks)
+		r := make(chan utils.Truth, numChunks)
 
 		for i := 0; i < numChunks; i++ {
 			start := i * chunkSize
@@ -47,10 +48,10 @@ func validate(matchedId [][]string, matchedKey [][]string) (*[]Truth, error) {
 	return &result, nil
 }
 
-func check(matchedId [][]string, matchedKey [][]string, result chan Truth) {
+func check(matchedId [][]string, matchedKey [][]string, result chan utils.Truth) {
 
 	region := "us-west-2"
-	res := &Truth{}
+	res := utils.Truth{}
 
 	for _, id := range matchedId {
 		if len(id) != 2 {
@@ -85,25 +86,25 @@ func check(matchedId [][]string, matchedKey [][]string, result chan Truth) {
 				continue
 			}
 
-			res.id = tid
-			res.key = tkey
-			res.idPath = id[0]
-			res.keyPath = key[0]
+			res.Id = tid
+			res.Key = tkey
+			res.IdPath = id[0]
+			res.KeyPath = key[0]
 
 			if output.Account != nil {
-				res.found = true
+				res.Found = true
 
 			}
 
 		}
 	}
-	result <- *res
+	result <- res
 }
 
-func checkSmallArr(matchedId [][]string, matchedKey [][]string) (*Truth, error) {
+func checkSmallArr(matchedId [][]string, matchedKey [][]string) (*utils.Truth, error) {
 
 	region := "us-west-2"
-	res := &Truth{}
+	res := &utils.Truth{}
 
 	for _, id := range matchedId {
 		if len(id) != 2 {
@@ -137,14 +138,14 @@ func checkSmallArr(matchedId [][]string, matchedKey [][]string) (*Truth, error) 
 				continue
 			}
 
-			res.id = tid
-			res.key = tkey
+			res.Id = tid
+			res.Key = tkey
 
-			res.idPath = id[0]
-			res.keyPath = key[0]
+			res.IdPath = id[0]
+			res.KeyPath = key[0]
 
 			if output.Account != nil {
-				res.found = true
+				res.Found = true
 			}
 
 		}

@@ -1,8 +1,9 @@
-package main
+package scan
 
 import (
 	"fmt"
 
+	"github.com/AvineshTripathi/cred/analyze"
 	"github.com/go-git/go-git/v5/plumbing/object"
 )
 
@@ -23,7 +24,7 @@ func ReadCommits(commitIterator object.CommitIter) ([][][]string, [][][]string, 
 				fmt.Println(err)
 			}
 
-			m, n := find(con)
+			m, n := analyze.Find(con)
 
 			if len(m) != 0 {
 

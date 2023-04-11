@@ -1,10 +1,12 @@
-package main
+package scan
 
 import (
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/AvineshTripathi/cred/analyze"
 )
 
 func ReadRepo(path string) ([][][]string, [][][]string, error) {
@@ -25,7 +27,7 @@ func ReadRepo(path string) ([][][]string, [][][]string, error) {
 				return err
 			}
 
-			matchedId, matchedkey := find(string(content))
+			matchedId, matchedkey := analyze.Find(string(content))
 
 			if len(matchedId) != 0 {
 				matchedId[0][0] = path

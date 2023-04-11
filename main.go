@@ -3,15 +3,12 @@ package main
 import (
 	"fmt"
 	"os"
-	"regexp"
 
+	"github.com/AvineshTripathi/cred/scan"
 	"github.com/go-git/go-git/v5"
 )
 
-var (
-	idPat     = regexp.MustCompile(`\b((?:AKIA|ABIA|ACCA|ASIA)[0-9A-Z]{16})\b`)
-	secretPat = regexp.MustCompile(`[^A-Za-z0-9+\/]{0,1}([A-Za-z0-9+\/]{40})[^A-Za-z0-9+\/]{0,1}`)
-)
+
 
 func main() {
 	var input1 string
@@ -46,7 +43,7 @@ func main() {
 			fmt.Println(err)
 		}
 
-		idCommit, keyCommit, err = ReadCommits(commitIt)
+		idCommit, keyCommit, err = scan.ReadCommits(commitIt)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -65,7 +62,7 @@ func main() {
 
 	if input1 == "1" {
 
-		idRepo, keyRepo, err = ReadRepo(f)
+		idRepo, keyRepo, err = scan.ReadRepo(f)
 		if err != nil {
 			fmt.Println(err)
 		}
