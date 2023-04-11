@@ -39,3 +39,12 @@ Currently the sub-string are found using the regexp module however there are som
 
 Second major concern is the speed, when some static files or ingeneral certain files like `package-lock.json` are present in the repo the possible secret key found in the repo by the detector is too high and therefore the performing tests for every pair ends up taking a lot time(even though goroutine is used)
 - One workaround found was to skip those files(mostly static files generate by the code) as those have a very less chances to have creds present however when the tool when exposed to variety of repo may encounter different repos that have varieties of such file so detection of those file can be challenging.
+
+
+## What's Next
+
+Apart from finding a concret solution for the above mentioned problems, the tool needs a better user interface hence maybe adding cobra cli to this is better to give it a new look.
+
+To make the detection more accurate research should be done. At the moment one of the improvements that might help the tool is to add some AI support that detects the creds(not sure if that could be added at this stage of development).
+
+There is a manual work seen here right now where a user has to manually use this tool to check for the creds, possible improvement here is to add this tool as a part of the developement environment 
