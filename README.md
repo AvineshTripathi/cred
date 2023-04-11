@@ -20,3 +20,10 @@ go run .
 
 The program will ask you for a repo link and that will be the repo the code will scan.
 
+## Approach
+
+Initial idea was to use the go-github lib to get a content iterator and search for the regexp match of AWS creds(both the components).
+However the problem faced was in the iteration. A work around found was to clone the repo in tmp dir and iterate it.
+
+
+
