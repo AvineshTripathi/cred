@@ -9,6 +9,8 @@ import (
 	"github.com/AvineshTripathi/cred/analyze"
 )
 
+// this func does the walk in the temp dir created where the cloned repo is stored
+// initial approach was to read similar to commits appraoch however iterating the entire repo is still crucial thing
 func ReadRepo(path string) ([][][]string, [][][]string, error) {
 
 	var a [][][]string

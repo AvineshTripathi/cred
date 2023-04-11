@@ -11,7 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 )
 
-func validate(matchedId [][]string, matchedKey [][]string) (*[]utils.Truth, error) {
+func Validate(matchedId [][]string, matchedKey [][]string) (*[]utils.Truth, error) {
 
 	var result []utils.Truth
 	if len(matchedKey) > 100 {
