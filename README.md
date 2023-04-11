@@ -26,4 +26,16 @@ Initial idea was to use the go-github lib to get a content iterator and search f
 However the problem faced was in the iteration. A work around found was to clone the repo in tmp dir and iterate it.
 
 
+## Architecture 
 
+Programs starts from `main.go` file which first asks for scan selections for the user. Currently there are two types of scan namely Repo scan(`readRepo.go`) and Commit scan(`readCommit.go`). Both the scans have their respective functions and each functions returns 2 slices i.e. possible access id slice and possible access secret key slice.
+
+These slices are sent to the `validate.go` where all the possible combinations of the pairs are made and these pairs are used to call the AWS api using AWS-v2-go. The response of the api call is the final check for the pair if they are actual creds present in the repo. 
+
+
+## Problems to be tackled 
+
+Currently the sub-string are found using the regexp module however there are some edge cases where the actual creds can be present in different form and therefore can go undetected. 
+
+Second major concern is the speed, when some static files or ingeneral certain files like `package-lock.json` are present in the repo the possible secret key found in the repo by the detector is too high and therefore the performing tests for every pair ends up taking a lot time(even though goroutine is used)
+- One workaround found was to skip those files(mostly static files generate by the code) as those have a very less chances to have creds present however when the tool when exposed to variety of repo may encounter different repos that have varieties of such file so detection of those file can be challenging.
