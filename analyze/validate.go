@@ -40,8 +40,7 @@ func Validate(matchedId [][]string, matchedKey [][]string) (*[]utils.Truth, erro
 		resultsSmall, err := checkSmallArr(matchedId, matchedKey)
 		if err != nil {
 			fmt.Println(err)
-		}	
-		fmt.Println(*resultsSmall)
+		}
 		result = append(result, *resultsSmall...)
 	}
 
@@ -93,8 +92,6 @@ func check(matchedId [][]string, matchedKey [][]string, result chan []utils.Trut
 				continue
 			}
 
-			
-
 			if output.Account != nil {
 				r.Found = true
 
@@ -118,14 +115,14 @@ func checkSmallArr(matchedId [][]string, matchedKey [][]string) (*[]utils.Truth,
 		tid := strings.TrimSpace(id[1])
 
 		for _, key := range matchedKey {
-			
+
 			if len(key) != 2 {
 				continue
 			}
 
 			tkey := strings.TrimSpace(key[1])
 			ctx := context.TODO()
-			
+
 			r.Id = tid
 			r.Key = tkey
 
@@ -150,7 +147,7 @@ func checkSmallArr(matchedId [][]string, matchedKey [][]string) (*[]utils.Truth,
 				continue
 			}
 
-			// extra check 
+			// extra check
 			if output.Account != nil {
 				r.Found = true
 			}
