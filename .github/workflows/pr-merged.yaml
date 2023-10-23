@@ -16,5 +16,5 @@ jobs:
           token: ${{ secrets.GH_ACTIONS }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            This PR has been merged and labeled "okayy"! Thanks @$PR_JSON.author for your contribution!
+            This PR has been merged and labeled "okayy"! Thanks @${{ github.event.pull_request.user.login }} for your contribution!
             ![Image](assets/gh/image.png)
