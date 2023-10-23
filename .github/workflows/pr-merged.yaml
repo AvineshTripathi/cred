@@ -6,15 +6,15 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Comment on PR
-      if: github.event.pull_request.merged == true && contains(fromJSON(github.event.pull_request.labels.*.name), 'hacktoberfest-accepted')
-      uses: peter-evans/create-or-update-comment@v3
-      with:
-        token: ${{ secrets.GH_ACTIONS }}
-        issue-number: ${{ github.event.pull_request.number }}
-        body: |
-          This PR has been merged and labeled "okayy"! Thanks @$PR_JSON.author for your contribution!
-          ![Image](assets/gh/image.png)
+      - name: Comment on PR
+        if: ${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'hacktoberfest-accepted') }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.GH_ACTIONS }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            This PR has been merged and labeled "okayy"! Thanks @$PR_JSON.author for your contribution!
+            ![Image](assets/gh/image.png)
