@@ -12,11 +12,19 @@ jobs:
     steps:
       - name: Check for Hacktoberfest label
         id: check-label
-        uses: actions/labeler@v2
+        uses: actions/labeler@v4
         with:
           label: hacktoberfest-accepted
           action: exists
           repo-token: ${{ secrets.GH_ACTIONS }}
+
+      - name: Debug outputs
+        run: |
+          echo "Actions: ${{ secrets.GH_ACTIONS }}"
+          echo "Label exists: ${{ steps.check-label.outputs.exists }}"
+          echo "PR merged: ${{ github.event.pull_request.merged }}"
+          echo "PR number: ${{ github.event.pull_request.number }}"
+          echo "PR author: ${{ github.event.pull_request.user.login }}"
 
       - name: Comment on Hacktoberfest PR
         if: steps.check-label.outputs.exists == 'true' && github.event.pull_request.merged == true
