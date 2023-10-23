@@ -16,6 +16,7 @@ jobs:
         with:
           label: hacktoberfest-accepted
           action: exists
+          repo-token: ${{ secrets.GH_ACTIONS }}
 
       - name: Comment on Hacktoberfest PR
         if: steps.check-label.outputs.exists == 'true' && github.event.pull_request.merged == true
