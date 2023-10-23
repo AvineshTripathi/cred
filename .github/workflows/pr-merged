@@ -1,0 +1,29 @@
+name: Hacktoberfest PR Comment
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  hacktoberfest-pr-comment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check for Hacktoberfest label
+        id: check-label
+        uses: actions/labeler@v2
+        with:
+          label: hacktoberfest-accepted
+          action: exists
+
+      - name: Comment on Hacktoberfest PR
+        if: steps.check-label.outputs.exists == 'true' && github.event.pull_request.merged == true
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          COMMENT_BODY="Congratulations @${PR_AUTHOR} on your Hacktoberfest PR! 🎉\n\n![Hacktoberfest Badge](./badges/hacktoberfest-badge.png)"
+          
+          # Set up the GitHub CLI
+          GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          echo "$COMMENT_BODY" | gh pr comment $PR_NUMBER -R $GITHUB_REPOSITORY --token $GITHUB_TOKEN
