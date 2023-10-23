@@ -1,38 +1,28 @@
-name: Hacktoberfest PR Comment
+name: Comment on merged PR
 
 on:
-  pull_request_target:
-    types:
-      - closed
+  pull_request:
+    types: [closed, labeled]
 
 jobs:
-  hacktoberfest-pr-comment:
+  comment:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check for Hacktoberfest label
-        id: check-label
-        uses: actions/labeler@v4
-        with:
-          label: hacktoberfest-accepted
-          action: exists
-          repo-token: ${{ secrets.GH_ACTIONS }}
+    - name: Checkout
+      uses: actions/checkout@v2
 
-      - name: Debug outputs
-        run: |
-          echo "Actions: ${{ secrets.GH_ACTIONS }}"
-          echo "Label exists: ${{ steps.check-label.outputs.exists }}"
-          echo "PR merged: ${{ github.event.pull_request.merged }}"
-          echo "PR number: ${{ github.event.pull_request.number }}"
-          echo "PR author: ${{ github.event.pull_request.user.login }}"
-
-      - name: Comment on Hacktoberfest PR
-        if: steps.check-label.outputs.exists == 'true' && github.event.pull_request.merged == true
-        run: |
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
-          COMMENT_BODY="Congratulations @${PR_AUTHOR} on your Hacktoberfest PR! 🎉\n\n![Hacktoberfest Badge](./badges/hacktoberfest-badge.png)"
+    - name: Comment on PR
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{secrets.GH_ACTIONS}}
+        script: |
+          const fs = require('fs');
+          const issue_number = context.issue.number;
+          const pr = await github.pulls.get(context.repo({pull_number: issue_number}));
+          const label_name = 'okayy';
+          const has_label = pr.data.labels.some(label => label.name === label_name);
           
-          # Set up the GitHub CLI
-          GITHUB_TOKEN="${{ secrets.GH_ACTIONS }}"
-          echo "$COMMENT_BODY" | gh pr comment $PR_NUMBER -R $GITHUB_REPOSITORY --token $GITHUB_TOKEN
+          if (pr.data.merged && has_label) {
+            const comment_body = `This PR has been merged! Thanks @${pr.data.user.login} for your contribution!\n\n![Image]()`;
+            await github.issues.createComment(context.repo({issue_number, body: comment_body}));
+          }
