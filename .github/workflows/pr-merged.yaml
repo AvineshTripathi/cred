@@ -25,5 +25,5 @@ jobs:
           COMMENT_BODY="Congratulations @${PR_AUTHOR} on your Hacktoberfest PR! 🎉\n\n![Hacktoberfest Badge](./badges/hacktoberfest-badge.png)"
           
           # Set up the GitHub CLI
-          GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN="${{ secrets.GH_ACTIONS }}"
           echo "$COMMENT_BODY" | gh pr comment $PR_NUMBER -R $GITHUB_REPOSITORY --token $GITHUB_TOKEN
