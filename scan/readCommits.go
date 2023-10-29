@@ -2,6 +2,7 @@ package scan
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/AvineshTripathi/cred/analyze"
 	"github.com/go-git/go-git/v5/plumbing/object"
@@ -9,12 +10,20 @@ import (
 
 // needs to be reconsider on the approch of iterating though all the commits
 // we are using the go-git repo to get the iterator
-// skip condition is still left to consider 
-func ReadCommits(commitIterator object.CommitIter) ([][][]string, [][][]string, error) {
+// skip condition is still left to consider
+func ReadCommits(commitIterator object.CommitIter, commits int) ([][][]string, [][][]string, error) {
 
 	var a [][][]string
 	var b [][][]string
+
+	if commits == 0 {
+		log.Println("No commits to verify")
+		return nil, nil, nil
+	} 
 	err := commitIterator.ForEach(func(c *object.Commit) error {
+		if commits <= 0 {
+			return nil 
+		}
 		fileIt, err := c.Files()
 		if err != nil {
 			fmt.Println(err)
@@ -39,7 +48,7 @@ func ReadCommits(commitIterator object.CommitIter) ([][][]string, [][][]string, 
 
 			return nil
 		})
-
+		commits--
 		return nil
 	})
 	if err != nil {

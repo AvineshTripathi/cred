@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
@@ -15,6 +16,10 @@ func main() {
 	// convert this to struct
 	fmt.Println("Enter the repo Url: ")
 	fmt.Scanln(&input1)
+
+
+	nums := flag.Int("commits", 0, "Number of commits you want to check in")
+	flag.Parse()
 
 	// store results of the scan, convert this to struct
 	var idRepo [][][]string
@@ -45,8 +50,8 @@ func main() {
 		if err != nil {
 			fmt.Println(err)
 		}
-
-		idCommit, keyCommit, err = scan.ReadCommits(commitIt)
+		fmt.Println(*nums)
+		idCommit, keyCommit, err = scan.ReadCommits(commitIt, *nums)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -58,15 +63,14 @@ func main() {
 					fmt.Println(err)
 				}
 
-				fmt.Println(t)
+				utils.Printer(t)
 			}
 		}
 	}
 
 	// this will scan the latest code cloned temp in local
 	if input1 == "1" {
-
-		idRepo, keyRepo, err = scan.ReadRepo(f)
+ 		idRepo, keyRepo, err = scan.ReadRepo(f)
 		if err != nil {
 			fmt.Println(err)
 		}
