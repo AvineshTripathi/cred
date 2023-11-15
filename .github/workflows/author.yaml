@@ -28,6 +28,7 @@ jobs:
           cd ./analyze
           npm i 
           pwd
+          ls
           node processPRs.js
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
