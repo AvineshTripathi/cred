@@ -80,7 +80,7 @@ async function commitChangesAndCreatePR() {
 
     // Read the updated/created file content
     const filePath = './author.json'; // Adjust as per your file path
-    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    const fileContent = fs.readFileSync(filePath, 'utf8');
 
     // Create or update the file in the repository
     await octokit.repos.createOrUpdateFileContents({
