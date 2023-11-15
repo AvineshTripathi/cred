@@ -12,8 +12,8 @@ async function processPRs() {
   try {
     // Fetch merged PRs in the last week
     const { data: mergedPRs } = await octokit.pulls.list({
-      owner: 'OWNER_NAME',
-      repo: 'REPO_NAME',
+      owner: 'AvineshTripathi',
+      repo: 'cred',
       state: 'closed',
       sort: 'updated',
       direction: 'desc',
