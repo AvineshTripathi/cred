@@ -37,7 +37,6 @@ async function processPRs() {
 
     mergedPRs.forEach((pr) => {
       const { number, user, labels } = pr;
-      console.log(pr)
       const author = user.login;
 
       if (!authorData[author]) {
@@ -58,9 +57,6 @@ async function processPRs() {
         }
       });
     });
-
-    console.log(authorData)
-    console.log(process.env.GITHUB_WORKSPACE+"/analyze/author.json")
     fs.writeFileSync("./author.json", JSON.stringify(authorData, null, 2));
     
     console.log('PRs processed and author.json updated successfully.');
@@ -84,7 +80,7 @@ async function commitChangesAndCreatePR() {
     await octokit.repos.createOrUpdateFileContents({
       owner,
       repo,
-      path: "analyze/author.json",
+      path: "author.json",
       branch: branchName,
       message: 'Updated author.json', // Commit message
       content: Buffer.from(fileContent).toString('base64'),
