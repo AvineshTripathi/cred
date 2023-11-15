@@ -19,12 +19,11 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm install @octokit/rest
+        run: |
+          cd ./analyze
+          npm install @octokit/rest
 
       - name: Change directory and execute script
-        run: |
-          ls -R
-          cd cred/.github # Adjust if necessary
-          node processPRs.js
+        run: node processPRs.js
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
