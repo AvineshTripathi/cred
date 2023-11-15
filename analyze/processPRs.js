@@ -34,10 +34,14 @@ async function processPRs() {
       direction: 'desc',
     });
 
+    console.log('Fetched merged PRs:', mergedPRs);
+
     // Process each merged PR
     mergedPRs.forEach((pr) => {
       const { number, user, labels } = pr;
       const author = user.login;
+
+      console.log(`Processing PR #${number} by ${author}`);
 
       // If author doesn't exist, create a new entry
       if (!authorData[author]) {
