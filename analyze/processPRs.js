@@ -58,7 +58,7 @@ async function processPRs() {
 
     console.log(authorData)
     console.log(process.env.GITHUB_WORKSPACE+"/analyze/author.json")
-    fs.writeFileSync(process.env.GITHUB_WORKSPACE+"/analyze/author.json", JSON.stringify(authorData, null, 2));
+    fs.writeFileSync("./author.json", JSON.stringify(authorData, null, 2));
     
     console.log('PRs processed and author.json updated successfully.');
   } catch (error) {
