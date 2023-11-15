@@ -37,6 +37,7 @@ async function processPRs() {
 
     mergedPRs.forEach((pr) => {
       const { number, user, labels } = pr;
+      console.log(pr)
       const author = user.login;
 
       if (!authorData[author]) {
@@ -83,7 +84,7 @@ async function commitChangesAndCreatePR() {
     await octokit.repos.createOrUpdateFileContents({
       owner,
       repo,
-      path: "author.json",
+      path: "analyze/author.json",
       branch: branchName,
       message: 'Updated author.json', // Commit message
       content: Buffer.from(fileContent).toString('base64'),
