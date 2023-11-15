@@ -1,4 +1,4 @@
-# Cred
+## Cred
 
 This tool is in initial developement phase and is build with the purpose to scan the git repo for AWS creds.
 
