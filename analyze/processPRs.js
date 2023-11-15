@@ -97,6 +97,7 @@ async function commitChangesAndCreatePR() {
       title: 'Update author.json',
       head: branchName,
       base: 'main', // Change the base branch as needed
+      labels: ['bot'], 
       body: 'Changes to author.json', // PR description
     });
 
