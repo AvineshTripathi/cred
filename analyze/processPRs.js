@@ -13,15 +13,16 @@ async function processPRs() {
 
     const authorJsonPath = path.join(process.env.GITHUB_WORKSPACE, 'author.json');
 
-    if (fs.existsSync(authorJsonPath)) {
+   if (!fs.existsSync(authorJsonPath)) {
+      fs.writeFileSync(authorJsonPath, JSON.stringify(authorData, null, 2));
+      console.log('author.json created.');
+    } else {
       const fileContent = fs.readFileSync(authorJsonPath, 'utf8');
       if (fileContent.trim() !== '') {
         authorData = JSON.parse(fileContent);
       } else {
         console.log('author.json is empty or contains only whitespace.');
       }
-    } else {
-      console.log('author.json does not exist.');
     }
 
     const { data: mergedPRs } = await octokit.pulls.list({
