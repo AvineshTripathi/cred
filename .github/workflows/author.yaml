@@ -22,7 +22,7 @@ jobs:
         run: npm install @octokit/rest
 
       - name: Change directory
-        run: cd ${{ github.workspace }}/cred/.github/workflows
+        run: cd .github/workflows
 
       - name: Process PR and update JSON
         run: node processPRs.js
