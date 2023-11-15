@@ -32,8 +32,6 @@ async function processPRs() {
       direction: 'desc',
     });
 
-    console.log('Fetched merged PRs:', mergedPRs);
-
     mergedPRs.forEach((pr) => {
       const { number, user, labels } = pr;
       const author = user.login;
@@ -50,10 +48,13 @@ async function processPRs() {
         if (!authorData[author][labelName]) {
           authorData[author][labelName] = [number];
         } else {
-          authorData[author][labelName].push(number);
+          if (!authorData[author][labelName].includes(number)) {
+            authorData[author][labelName].push(number);
+          }
         }
       });
     });
+
     console.log(authorData)
     fs.writeFileSync(authorJsonPath, JSON.stringify(authorData, null, 2));
     
