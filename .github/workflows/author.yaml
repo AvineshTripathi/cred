@@ -22,7 +22,7 @@ jobs:
         run: npm install @octokit/rest
 
       - name: PWd
-        run: pwd
+        run: ls
         
       - name: Change directory
         run: cd analyze
