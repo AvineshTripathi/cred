@@ -30,6 +30,8 @@ jobs:
         run: cd analyze
 
       - name: Process PR and update JSON
-        run: node processPRs.js
+        run: |
+          cd analyze
+          node processPRs.js
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
