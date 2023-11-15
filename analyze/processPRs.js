@@ -78,7 +78,7 @@ async function commitChangesAndCreatePR() {
     const filePath = '/home/runner/work/cred/cred/analyze/author.json';
 
     const fileContent = fs.readFileSync("./author.json", 'utf8');
-    console.log(f)
+    console.log(fileContent)
     // Create or update the file in the repository
     await octokit.repos.createOrUpdateFileContents({
       owner,
