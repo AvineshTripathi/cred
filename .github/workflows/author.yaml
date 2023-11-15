@@ -12,9 +12,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          path: analyze
-          
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -23,15 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm install @octokit/rest
 
-      - name: PWd
-        run: ls
-        
-      - name: Change directory
-        run: cd analyze
-
-      - name: Process PR and update JSON
+      - name: Change directory and execute script
         run: |
-          npm i
+          cd cred/.github # Adjust if necessary
           node processPRs.js
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
