@@ -53,13 +53,15 @@ async function processPRs() {
       // Process labels for this PR
       labels.forEach((label) => {
         const labelName = label.name;
-
+        console.log(labelName)
         // Check if the label exists for the author in author.json
         if (!authorData[author][labelName]) {
           // If the label doesn't exist for the author, create a new array and add PR number
+          console.log(1)
           authorData[author][labelName] = [number];
         } else {
           // If the label exists, push PR number to the corresponding label array
+          console.log(2)
           authorData[author][labelName].push(number);
         }
       });
