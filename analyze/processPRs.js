@@ -74,9 +74,9 @@ async function processPRs() {
 
 async function commitChangesAndCreatePR() {
   try {
-    const owner = 'your-username';
-    const repo = 'your-repo';
-    const branchName = 'branch-name';
+    const owner = 'AvineshTripathi';
+    const repo = 'cred';
+    const branchName = 'new';
 
     // Read the updated/created file content
     const filePath = './author.json'; // Adjust as per your file path
