@@ -1,0 +1,33 @@
+name: PR Label Assignment
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  process_pull_request:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Process PR and update JSON
+        run: |
+          # Logic to process PR and update JSON using a script or code
+
+          # Example script using Node.js and Octokit (GitHub's official REST API client)
+          # Install the required package
+          # npm install @octokit/rest
+
+          # Replace the following logic with your specific implementation
+          node processPR.js
