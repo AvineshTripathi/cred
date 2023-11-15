@@ -74,7 +74,6 @@ async function commitChangesAndCreatePR() {
     const owner = 'AvineshTripathi';
     const repo = 'cred';
     const branchName = 'new';
-    /home/runner/work/cred/cred/analyze
     // Read the updated/created file content
     const filePath = '/home/runner/work/cred/cred/analyze/author.json';
 
