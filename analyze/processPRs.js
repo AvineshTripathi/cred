@@ -71,4 +71,50 @@ async function processPRs() {
   console.log(f)
 }
 
-processPRs();
+
+async function commitChangesAndCreatePR() {
+  try {
+    const owner = 'your-username';
+    const repo = 'your-repo';
+    const branchName = 'branch-name';
+
+    // Read the updated/created file content
+    const filePath = './author.json'; // Adjust as per your file path
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+
+    // Create or update the file in the repository
+    await octokit.repos.createOrUpdateFileContents({
+      owner,
+      repo,
+      path: filePath,
+      branch: branchName,
+      message: 'Updated author.json', // Commit message
+      content: Buffer.from(fileContent).toString('base64'),
+    });
+
+    // Create a pull request
+    const { data: pullRequest } = await octokit.pulls.create({
+      owner,
+      repo,
+      title: 'Update author.json',
+      head: branchName,
+      base: 'main', // Change the base branch as needed
+      body: 'Changes to author.json', // PR description
+    });
+
+    console.log('Pull request created:', pullRequest.html_url);
+  } catch (error) {
+    console.error('Error occurred:', error);
+  }
+}
+
+async function main() {
+  try {
+    await processPRs(); // Wait for processPRs to complete
+    await commitAndCreatePR(); // Wait for commitAndCreatePR to complete
+  } catch (error) {
+    console.error('Error occurred in main:', error);
+  }
+}
+
+main();
