@@ -16,8 +16,14 @@ async function processPRs() {
       const fileContent = fs.readFileSync('author.json', 'utf8');
       if (fileContent.trim() !== '') {
         authorData = JSON.parse(fileContent);
+      } else {
+        console.log('author.json is empty or contains only whitespace.');
       }
+    } else {
+      console.log('author.json does not exist.');
     }
+
+    console.log('Existing author data:', authorData);
 
     // Fetch merged PRs in the last week
     const { data: mergedPRs } = await octokit.pulls.list({
