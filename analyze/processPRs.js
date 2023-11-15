@@ -11,9 +11,11 @@ async function processPRs() {
   try {
     let authorData = {};
 
+    console.log("workspace", process.env.GITHUB_WORKSPACE)
     const authorJsonPath = path.join(process.env.GITHUB_WORKSPACE, 'author.json');
 
    if (!fs.existsSync(authorJsonPath)) {
+       console.log("existsSync", fs.existsSync(authorJsonPath))
       fs.writeFileSync(authorJsonPath, JSON.stringify(authorData, null, 2));
       console.log('author.json created.');
     } else {
@@ -64,6 +66,9 @@ async function processPRs() {
   } catch (error) {
     console.error('Error occurred:', error);
   }
+
+  const f = fs.readFileSync(authorJsonPath, 'utf8');
+  console.log(f)
 }
 
 processPRs();
