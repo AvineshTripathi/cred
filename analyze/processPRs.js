@@ -67,7 +67,7 @@ async function processPRs() {
     console.error('Error occurred:', error);
   }
 
-  const f = fs.readFileSync(authorJsonPath, 'utf8');
+  const f = fs.readFileSync("./author.json", 'utf8');
   console.log(f)
 }
 
