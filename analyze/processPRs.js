@@ -1,8 +1,8 @@
 const { Octokit } = require('@octokit/rest');
 const fs = require('fs');
+const path = require('path');
 
 const githubToken = process.env.GH_TOKEN;
-// Initialize Octokit with your GitHub token
 const octokit = new Octokit({
   auth: githubToken,
 });
@@ -11,9 +11,10 @@ async function processPRs() {
   try {
     let authorData = {};
 
-    // Read the existing author data from author.json
-    if (fs.existsSync('author.json')) {
-      const fileContent = fs.readFileSync('author.json', 'utf8');
+    const authorJsonPath = path.join(process.env.GITHUB_WORKSPACE, 'author.json');
+
+    if (fs.existsSync(authorJsonPath)) {
+      const fileContent = fs.readFileSync(authorJsonPath, 'utf8');
       if (fileContent.trim() !== '') {
         authorData = JSON.parse(fileContent);
       } else {
@@ -23,9 +24,6 @@ async function processPRs() {
       console.log('author.json does not exist.');
     }
 
-    console.log('Existing author data:', authorData);
-
-    // Fetch merged PRs in the last week
     const { data: mergedPRs } = await octokit.pulls.list({
       owner: 'AvineshTripathi',
       repo: 'cred',
@@ -36,40 +34,28 @@ async function processPRs() {
 
     console.log('Fetched merged PRs:', mergedPRs);
 
-    // Process each merged PR
     mergedPRs.forEach((pr) => {
       const { number, user, labels } = pr;
       const author = user.login;
 
-      console.log(`Processing PR #${number} by ${author}`);
-
-      // If author doesn't exist, create a new entry
       if (!authorData[author]) {
         authorData[author] = {
           link: `link_to_${author}_profile`,
         };
       }
 
-      // Process labels for this PR
       labels.forEach((label) => {
         const labelName = label.name;
-        console.log(labelName)
-        // Check if the label exists for the author in author.json
+
         if (!authorData[author][labelName]) {
-          // If the label doesn't exist for the author, create a new array and add PR number
-          console.log(1)
           authorData[author][labelName] = [number];
         } else {
-          // If the label exists, push PR number to the corresponding label array
-          console.log(2)
           authorData[author][labelName].push(number);
         }
       });
     });
-
     console.log(authorData)
-    // Update author.json with the modified data
-    fs.writeFileSync('author.json', JSON.stringify(authorData, null, 2));
+    fs.writeFileSync(authorJsonPath, JSON.stringify(authorData, null, 2));
     
     console.log('PRs processed and author.json updated successfully.');
   } catch (error) {
