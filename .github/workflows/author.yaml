@@ -19,15 +19,9 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm install
+        run: npm install @octokit/rest
 
       - name: Process PR and update JSON
-        run: |
-          # Logic to process PR and update JSON using a script or code
-
-          # Example script using Node.js and Octokit (GitHub's official REST API client)
-          # Install the required package
-          # npm install @octokit/rest
-
-          # Replace the following logic with your specific implementation
-          node processPR.js
+        run: node processPRs.js
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
