@@ -23,6 +23,7 @@ jobs:
 
       - name: Change directory and execute script
         run: |
+          ls -R
           cd cred/.github # Adjust if necessary
           node processPRs.js
         env:
