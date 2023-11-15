@@ -111,7 +111,7 @@ async function commitChangesAndCreatePR() {
 async function main() {
   try {
     await processPRs(); // Wait for processPRs to complete
-    await commitAndCreatePR(); // Wait for commitAndCreatePR to complete
+    await commitChangesAndCreatePR(); // Wait for commitAndCreatePR to complete
   } catch (error) {
     console.error('Error occurred in main:', error);
   }
