@@ -86,12 +86,20 @@ async function commitChangesAndCreatePR() {
       content: Buffer.from(fileContent).toString('base64'),
     });
 
+    const { data: { commit } } = await octokit.repos.getCommit({
+    owner,
+    repo,
+    ref: branchName // Assuming branchName holds the branch reference where the changes were made
+    });
+
+    const commitSha = commit.sha;
+
     // Create a pull request
     const { data: pullRequest } = await octokit.pulls.create({
       owner,
       repo,
       title: 'Update author.json',
-      head: branchName,
+      head: `${owner}:${commitSha}`,
       base: 'main', // Change the base branch as needed
       labels: ['bot'], 
       body: 'Changes to author.json', // PR description
