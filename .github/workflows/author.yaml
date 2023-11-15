@@ -25,7 +25,7 @@ jobs:
         run: pwd
         
       - name: Change directory
-        run: cd ~/.github/workflows
+        run: cd ~/work/cred/cred/.github/workflows
 
       - name: Process PR and update JSON
         run: node processPRs.js
