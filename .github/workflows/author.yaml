@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with: 
+          path: ./analyze
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -19,9 +21,7 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: |
-          cd ./analyze
-          npm install @octokit/rest
+        run: npm install @octokit/rest
 
       - name: Change directory and execute script
         run: node processPRs.js
