@@ -66,9 +66,6 @@ async function processPRs() {
   } catch (error) {
     console.error('Error occurred:', error);
   }
-
-  const f = fs.readFileSync("./author.json", 'utf8');
-  console.log(f)
 }
 
 
@@ -77,11 +74,12 @@ async function commitChangesAndCreatePR() {
     const owner = 'AvineshTripathi';
     const repo = 'cred';
     const branchName = 'new';
-
+    /home/runner/work/cred/cred/analyze
     // Read the updated/created file content
-    const filePath = './author.json'; // Adjust as per your file path
-    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const filePath = '/home/runner/work/cred/cred/analyze/author.json';
 
+    const fileContent = fs.readFileSync("./author.json", 'utf8');
+    console.log(f)
     // Create or update the file in the repository
     await octokit.repos.createOrUpdateFileContents({
       owner,
