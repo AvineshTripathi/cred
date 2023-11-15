@@ -12,7 +12,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
+        with:
+          path: analyze
+          
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
