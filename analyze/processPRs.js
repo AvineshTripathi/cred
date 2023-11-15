@@ -67,6 +67,7 @@ async function processPRs() {
       });
     });
 
+    console.log(authorData)
     // Update author.json with the modified data
     fs.writeFileSync('author.json', JSON.stringify(authorData, null, 2));
     
