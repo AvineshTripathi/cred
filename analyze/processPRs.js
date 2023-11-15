@@ -56,6 +56,7 @@ async function processPRs() {
     });
 
     console.log(authorData)
+    console.log(authorJsonPath)
     fs.writeFileSync(authorJsonPath, JSON.stringify(authorData, null, 2));
     
     console.log('PRs processed and author.json updated successfully.');
