@@ -83,7 +83,7 @@ async function commitChangesAndCreatePR() {
     await octokit.repos.createOrUpdateFileContents({
       owner,
       repo,
-      path: filePath,
+      path: "./author.json",
       branch: branchName,
       message: 'Updated author.json', // Commit message
       content: Buffer.from(fileContent).toString('base64'),
