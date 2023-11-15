@@ -1,7 +1,6 @@
 const { Octokit } = require('@octokit/rest');
 const fs = require('fs');
 
-
 const githubToken = process.env.GH_TOKEN;
 // Initialize Octokit with your GitHub token
 const octokit = new Octokit({
@@ -10,6 +9,16 @@ const octokit = new Octokit({
 
 async function processPRs() {
   try {
+    let authorData = {};
+
+    // Read the existing author data from author.json
+    if (fs.existsSync('author.json')) {
+      const fileContent = fs.readFileSync('author.json', 'utf8');
+      if (fileContent.trim() !== '') {
+        authorData = JSON.parse(fileContent);
+      }
+    }
+
     // Fetch merged PRs in the last week
     const { data: mergedPRs } = await octokit.pulls.list({
       owner: 'AvineshTripathi',
@@ -18,8 +27,6 @@ async function processPRs() {
       sort: 'updated',
       direction: 'desc',
     });
-
-    let authorData = JSON.parse(fs.readFileSync('author.json', 'utf8'));
 
     // Process each merged PR
     mergedPRs.forEach((pr) => {
