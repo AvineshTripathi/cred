@@ -35,8 +35,8 @@ jobs:
       - name: Commit changes
         run: |
           cd ./analyze
-          git config --global user.email "avineshtripathi1@gmail.com"
-          git config --global user.name "AvineshTripathi"
+          git config --global user.email "work.avinesh@gmail.com"
+          git config --global user.name "wAvinesh"
           git add author.json
           git commit -m "Update author.json" author.json
           echo "https://${{ secrets.GITH }}@github.com/AvineshTripathi/cred.git HEAD:main"
