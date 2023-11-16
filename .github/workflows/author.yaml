@@ -39,7 +39,8 @@ jobs:
           git config --global user.name "GitHub Actions"
           git add author.json
           git commit -m "Update author.json" author.json
-          git push https://${{ secrets.ACTIONS_PAT }}@github.com/AvineshTripathi/cred.git HEAD:main
+          echo "https://${{ secrets.GITHUB_TOKEN }}@github.com/AvineshTripathi/cred.git HEAD:main"
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/AvineshTripathi/cred.git HEAD:main
 
       - name: Create pull request
         run: |
