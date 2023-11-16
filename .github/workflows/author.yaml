@@ -40,8 +40,8 @@ jobs:
           git add author.json
           git commit -m "Update author.json" author.json
           echo "https://${{ secrets.GITH }}@github.com/AvineshTripathi/cred.git HEAD:main"
-          git push https://${{ secrets.ACCESS }}@github.com/AvineshTripathi/cred.git HEAD:main
-
+          git push
+          
       - name: Create pull request
         run: |
           gh pr create --base main --title "Update author.json" --body "Changes made to author.json" --reviewer "AvineshTripathi"
