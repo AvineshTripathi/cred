@@ -99,7 +99,8 @@ async function commitChangesAndCreatePR() {
       owner,
       repo,
       title: 'Update author.json',
-      head: `${branchName}:${commitSha}`,
+      head: branchName,
+      sha: commitSha,
       base: 'main', // Change the base branch as needed
       labels: ['bot'], 
       body: 'Changes to author.json', // PR description
