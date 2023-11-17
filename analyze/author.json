@@ -1,1 +1,33 @@
-{}
+{
+  "AvineshTripathi": {
+    "link": "link_to_AvineshTripathi_profile",
+    "good first issue": [
+      83,
+      80,
+      79,
+      75,
+      73
+    ],
+    "documentation": [
+      82,
+      70
+    ],
+    "invalid": [
+      81,
+      76
+    ],
+    "hacktoberfest-accepted": [
+      78
+    ],
+    "enhancement": [
+      77,
+      71
+    ],
+    "duplicate": [
+      74
+    ],
+    "bug": [
+      72
+    ]
+  }
+}
