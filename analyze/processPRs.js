@@ -14,8 +14,8 @@ async function processPRs() {
     console.log("workspace", process.env.GITHUB_WORKSPACE)
     const authorJsonPath = path.join(process.env.GITHUB_WORKSPACE, 'author.json');
 
-   if (!fs.existsSync(authorJsonPath)) {
-       console.log("existsSync", fs.existsSync(authorJsonPath))
+    if (!fs.existsSync(authorJsonPath)) {
+      console.log("existsSync", fs.existsSync(authorJsonPath))
       fs.writeFileSync(authorJsonPath, JSON.stringify(authorData, null, 2));
       console.log('author.json created.');
     } else {
@@ -27,6 +27,10 @@ async function processPRs() {
       }
     }
 
+    const currentDate = new Date();
+    const sevenDaysAgo = new Date(currentDate);
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 1);
+
     const { data: mergedPRs } = await octokit.pulls.list({
       owner: 'AvineshTripathi',
       repo: 'cred',
@@ -35,7 +39,12 @@ async function processPRs() {
       direction: 'desc',
     });
 
-    mergedPRs.forEach((pr) => {
+    const recentPRs = mergedPRs.filter(pr => {
+      const prCreatedAt = new Date(pr.created_at);
+      return prCreatedAt > sevenDaysAgo;
+    });
+
+    recentPRs.forEach((pr) => {
       const { number, user, labels } = pr;
       const author = user.login;
 
@@ -45,25 +54,29 @@ async function processPRs() {
         };
       }
 
-      labels.forEach((label) => {
-        const labelName = label.name;
+      if (labels.length > 0) {
+        labels.forEach((label) => {
+          const labelName = label.name;
 
-        if (!authorData[author][labelName]) {
-          authorData[author][labelName] = [number];
-        } else {
-          if (!authorData[author][labelName].includes(number)) {
-            authorData[author][labelName].push(number);
+          if (!authorData[author][labelName]) {
+            authorData[author][labelName] = [number];
+          } else {
+            if (!authorData[author][labelName].includes(number)) {
+              authorData[author][labelName].push(number);
+            }
           }
-        }
-      });
+        });
+      } else {
+        console.log(`Skipping PR #${number}: No labels found`);
+      }
     });
-    fs.writeFileSync("./author.json", JSON.stringify(authorData, null, 2));
-    
+
+    fs.writeFileSync(authorJsonPath, JSON.stringify(authorData, null, 2));
     console.log('PRs processed and author.json updated successfully.');
   } catch (error) {
     console.error('Error occurred:', error);
   }
 }
 
-
 processPRs();
+  
