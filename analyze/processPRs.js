@@ -16,7 +16,7 @@ async function processPRs() {
 
     if (!fs.existsSync(authorJsonPath)) {
       console.log("existsSync", fs.existsSync(authorJsonPath))
-      fs.writeFileSync(".", JSON.stringify(authorData, null, 2));
+      fs.writeFileSync(path.join(currentDirectory, 'author.json'), JSON.stringify(authorData, null, 2));
       console.log('author.json created.');
     } else {
       const fileContent = fs.readFileSync(authorJsonPath, 'utf8');
