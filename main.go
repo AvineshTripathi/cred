@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	var input1 string // to store inputs
+	var input1 string // to store inputs  AKIA3XWNRUIJEF25GO7S
 	// convert this to struct
 	fmt.Println("Enter the repo Url: ")
 	fmt.Scanln(&input1)
